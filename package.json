@@ -9,7 +9,12 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/unzipper": "^0.10.10",
     "typescript": "~5.6.2",
     "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "node-stream-zip": "^1.15.0",
+    "unzipper": "^0.12.3"
   }
 }

@@ -1,6 +1,4 @@
-
-export type ID =  {
+export type ID = {
     namespace: string;
     path: string;
 };
-

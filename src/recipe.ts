@@ -9,7 +9,7 @@ export async function getRecipes(
     resultOnly?: boolean
 ): Promise<Object[]> {
     // Await `getEntries` and then use `Promise.all` to resolve all `this.jar.read` calls
-    let entries = await this.jar.getEntries(``, /data\/[^\/]*\/recipes\/.*/);
+    let entries = await this.jar.getEntries(``, `/data\/[^\/]*\/recipes\/.*/`);
 
     let recipes = (
         await Promise.all(

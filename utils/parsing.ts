@@ -2,10 +2,18 @@ import { ID } from "./types";
 
 export function toID(id: string | ID): ID {
     if (typeof id === "string") {
-        return {
-            namespace: id.split(":")[0],
-            path: id.split(":")[1],
-        };
+        let x = id.split(":");
+        if (x.length > 1) {
+            return {
+                namespace: x[0],
+                path: x[1],
+            };
+        } else {
+            return {
+                namespace: "minecraft",
+                path: x[0],
+            };
+        }
     } else {
         return id;
     }

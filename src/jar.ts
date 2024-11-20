@@ -7,26 +7,44 @@ export class Jar {
         this.zip = new async({ file: jarFile });
     }
 
-    async getEntries(path?: string, filter?: RegExp) {
+    async getEntries(path?: string, filter?: string) {
         return Object.entries(await this.zip.entries())
             .filter(([key]) => {
                 return (
                     key.startsWith(path ? path : "") &&
-                    (filter ? filter.test(key) : true) &&
+                    (filter ? RegExp(filter).test(key) : true) &&
                     !key.includes(".class")
                 );
             })
             .map(([key, _]) => key);
     }
 
+    async getDirectories(path?: string, filter?: string) {
+        let entries = await this.getEntries(path, filter);
+
+        let directories = new Set();
+
+        entries.forEach((dir) => {
+            directories.add(dir.split("/")[0]);
+        });
+
+        return Array.from(directories);
+    }
+
     async read(path: string | ZipEntry) {
-        return JSON.parse(
-            (
-                await this.zip.entryData(
-                    typeof path === "string" ? path : path.name
-                )
-            ).toString()
-        );
+        try {
+            return JSON.parse(
+                (
+                    await this.zip.entryData(
+                        typeof path === "string" ? path : path.name
+                    )
+                ).toString()
+            );
+        } catch (err) {
+            return {
+                data: await this.zip.entryData(path),
+            };
+        }
     }
 }
 

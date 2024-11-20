@@ -4,8 +4,9 @@ import { Jar } from "./jar";
 import { toID } from "../utils/parsing";
 import { ID } from "../utils/types";
 import { getRecipes } from "./recipe";
-import { getBlockModels } from "./model";
-import { getItemsFromTag, getTags } from "./tag";
+import { getBlockModel, getBlockModels } from "./model";
+import { getTag, getTags, getTagTypes } from "./tag";
+import { getData } from "./data";
 
 const jar = "Minecraft Java Edition 1.20.1.jar";
 
@@ -19,7 +20,10 @@ export class Lectern {
     public getRecipes = getRecipes;
     public getBlockModels = getBlockModels;
     public getTags = getTags;
-    public getItemsfromTag = getItemsFromTag;
+    public getTagTypes = getTagTypes;
+    public getTag = getTag;
+    public getBlockModel = getBlockModel;
+    public getData = getData;
 
     /* async getTextures(id: string | ID): Promise<Object[]> {
     let resource = toID(id);
@@ -51,4 +55,9 @@ let x = new Lectern(jar);
 
 //console.log(await x.getTags(undefined, "minecraft:blocks/mineable"));
 
-console.log(await x.getItemsfromTag("minecraft:wool"));
+/*console.log(await x.getTag("minecraft:wool", "blocks"));
+console.log(await x.getBlockModel("minecraft:white_wool"));
+console.log(await x.getBlockModel("minecraft:template_anvil"));
+*/
+
+console.log(await x.getData("minecraft:white_wool"));

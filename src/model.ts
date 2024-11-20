@@ -8,7 +8,7 @@ export async function getBlockModels(
     parent?: string | ID
 ): Promise<Object[]> {
     let entries = (
-        await this.jar.getEntries(``, /assets\/[^\/]*\/models\/block\/.*/)
+        await this.jar.getEntries(``, `/assets\/[^\/]*\/models\/block\/.*/`)
     ).filter((entry) => {
         if (!id) {
             return true;
@@ -44,7 +44,7 @@ export async function getItemModels(
     type?: string | ID,
     resultOnly?: boolean
 ): Promise<Object[]> {
-    let entries = await this.jar.getEntries(``, /assets\/[^\/]*\/models\/.*/);
+    let entries = await this.jar.getEntries(``, `/assets\/[^\/]*\/models\/.*/`);
     console.log(entries);
 
     let models = (
@@ -76,4 +76,14 @@ export async function getItemModels(
     });
 
     return models;
+}
+
+export async function getBlockModel(
+    this: Lectern,
+    id: string | ID
+): Promise<Object[]> {
+    let resource = toID(id);
+    return await this.jar.read(
+        `assets\/${resource.namespace}\/models\/block\/${resource.path}.json`
+    );
 }

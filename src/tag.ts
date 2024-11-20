@@ -9,7 +9,7 @@ export async function getTags(
 ): Promise<Object[]> {
     // Await `getEntries` and then use `Promise.all` to resolve all `this.jar.read` calls
     let entries = (
-        await this.jar.getEntries(``, /data\/[^\/]*\/tags\/.*/)
+        await this.jar.getEntries(``, `/data\/[^\/]*\/tags\/.*/`)
     ).filter((entry) => {
         if (!registry) {
             return true;
@@ -41,21 +41,25 @@ export async function getTags(
     return tags;
 }
 
-export async function getItemsFromTag(
+export async function getTagTypes(this: Lectern): Promise<Object> {
+    let tags = await this.jar.getDirectories(``, `/data\/[^\/]*\/tags\/.*/`);
+    return tags;
+}
+
+export async function getTag(
     this: Lectern,
-    id: string | ID
-): Promise<Object[]> {
+    id: string | ID,
+    type: string
+): Promise<Object | undefined> {
     let resource = toID(id);
 
-    let entries = await this.jar.getEntries(
-        ``,
-        RegExp(`data\/${resource.namespace}\/tags\/.*${resource.path}.json`)
-    );
+    try {
+        let tag = await this.jar.read(
+            `data/${resource.namespace}/tags/${type}/${resource.path}.json`
+        );
 
-    console.log(entries);
-    let items = await Promise.all(
-        entries.map((entry) => this.jar.read(entry)) // No need for `async` or `await` inside `map`
-    );
-
-    return items;
+        return tag;
+    } catch (err) {
+        return;
+    }
 }

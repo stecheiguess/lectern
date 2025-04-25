@@ -1,29 +1,17 @@
-import unzipper from "unzipper";
-import { async, ZipEntry } from "node-stream-zip";
-import { Jar } from "./jar";
-import { toID } from "../utils/parsing";
-import { ID } from "../utils/types";
-import { getRecipes } from "./recipe";
-import { getBlockModel, getBlockModels } from "./model";
-import { getTag, getTags, getTagTypes } from "./tag";
-import { getData } from "./data";
-
-const jar = "Minecraft Java Edition 1.20.1.jar";
+import { getBlocks, getBlockstate } from "./handlers/block"
+import { getRecipe, getRecipes } from "./handlers/recipe"
 
 export class Lectern {
-    protected jar: Jar;
+    protected basePath: string
 
-    constructor(jarFile: string) {
-        this.jar = new Jar(jarFile);
+    constructor(basePath: string) {
+        this.basePath = basePath
     }
 
-    public getRecipes = getRecipes;
-    public getBlockModels = getBlockModels;
-    public getTags = getTags;
-    public getTagTypes = getTagTypes;
-    public getTag = getTag;
-    public getBlockModel = getBlockModel;
-    public getData = getData;
+    public getBlocks = getBlocks
+    public getBlockstate = getBlockstate
+    public getRecipes = getRecipes
+    public getRecipe = getRecipe
 
     /* async getTextures(id: string | ID): Promise<Object[]> {
     let resource = toID(id);
@@ -38,7 +26,10 @@ export class Lectern {
   }*/
 }
 
-let x = new Lectern(jar);
+let x = new Lectern("1.21.5")
+const recipes = await x.getRecipes()
+console.log(await x.getRecipe(recipes[0]))
+
 // console.log(
 //     await x.getRecipes({
 //         namespace: "minecraft",
@@ -60,4 +51,4 @@ console.log(await x.getBlockModel("minecraft:white_wool"));
 console.log(await x.getBlockModel("minecraft:template_anvil"));
 */
 
-console.log(await x.getData("minecraft:white_wool"));
+//console.log(await getEntries("1.21.5"))
